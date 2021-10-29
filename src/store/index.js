@@ -31,6 +31,7 @@ export default new Vuex.Store({
     actions: {
         selectTile(context, tile) {
             context.commit("setSelectedTile", tile);
+            return this.dispatch(StoreActions.getTileDetails, { accountId: context.state.account.id, tileId: tile.id });
         },
         getAccount(context, accountId) {
             let ctx = context;
@@ -38,11 +39,10 @@ export default new Vuex.Store({
                 payload: btoa(accountId)
             }).then(e => ctx.commit("setAccount", e));
         },
-        getTileDetails(context, accountId, tileId) {
+        getTileDetails(context, payload) {
             let ctx = context;
-            myApi.get("tile", {
-                accId: btoa(accountId),
-                tId: btoa(tileId)
+            return myApi.get("tile", {
+                payload: btoa("".concat(btoa(payload.accountId), "|", btoa(payload.tileId)))
             }).then(e => ctx.commit("setSelectedTileDetails", e));
         }
     },
