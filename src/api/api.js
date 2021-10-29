@@ -8,7 +8,8 @@ export default {
         this.baseUrl = baseUrl;
         this.get = function (url, payload) {
             return new Promise((resolve) => {
-                Axios.get(baseUrl.concat(["/", "{url}"]), payload)
+                let fullUrl = this.baseUrl.concat("/", url);
+                Axios.get(fullUrl, { params: payload })
                 .then(e => resolve(e.data))
             });
         }

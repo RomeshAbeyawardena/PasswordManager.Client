@@ -20,7 +20,7 @@
 <script>
     import TileList from "./components/TileList";
     import TileDetails from "./components/TileDetails";
-
+    import { StoreActions } from "./store";
     export default {
         name: "App",
 
@@ -37,6 +37,9 @@
             tileListChanged(value) {
                 this.shown = value != null;
             }
+        },
+        mounted() {
+            this.$store.dispatch(StoreActions.getAccount, { payload: btoa("cbb0291892114d258ad254193f0889a9") })
         }
     };
 </script>

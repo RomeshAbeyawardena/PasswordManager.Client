@@ -9,7 +9,7 @@ export const StoreActions = {
     selectTile: "selectTile",
 }
 
-let myApi = Api.GetApi("");
+let myApi = Api.api.GetApi("http://localhost:5500/api");
 
 export default new Vuex.Store({
     state: {
@@ -19,13 +19,13 @@ export default new Vuex.Store({
     },
     mutations: {
         setAccount(state, account) {
-            Vue.set(state.account, account);
+            Vue.set(state, "account", account);
         },
         setSelectedTile(state, tile) {
-            Vue.set(state.selectedTileItem, tile);
+            Vue.set(state, "selectedTileItem", tile);
         },
         setSelectedTileDetails(state, tileDetails) {
-            Vue.set(state.selectedTileDetails, tileDetails);
+            Vue.set(state, "selectedTileDetails", tileDetails);
         }
     },
     actions: {
@@ -35,7 +35,7 @@ export default new Vuex.Store({
         getAccount(context, accountId) {
             let ctx = context;
             myApi.get("account", {
-                accId: btoa(accountId)
+                payload: btoa(accountId)
             }).then(e => ctx.commit("setAccount", e));
         },
         getTileDetails(context, accountId, tileId) {
