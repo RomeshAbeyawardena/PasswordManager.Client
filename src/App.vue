@@ -8,12 +8,10 @@
 
         <v-main>
             <TileList :tiles="account.tiles" v-on:changed="tileListChanged" />
-        </v-main>
-        <v-slide-y-transition origin="bottom center 0">
-            <v-footer app padless v-if="shown">
+            <v-bottom-sheet v-model="shown">
                 <TileDetails :tile-details="selectedTileDetails" />
-            </v-footer>
-        </v-slide-y-transition>
+            </v-bottom-sheet>
+        </v-main>
     </v-app>
 </template>
 

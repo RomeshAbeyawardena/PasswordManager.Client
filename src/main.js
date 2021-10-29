@@ -3,6 +3,8 @@ import App from "./App.vue";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 require("./filters");
+
+require("./components/CredentialViewer");
 Vue.config.productionTip = false;
 
 new Vue({
