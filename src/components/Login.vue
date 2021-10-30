@@ -1,11 +1,11 @@
 ﻿<template>
-    <v-form>
+    <v-form v-model="isValid">
         <v-container>
             <v-row>
                 <v-col cols="12">
                     <v-card elevation="0">
                         <v-card-title>
-                            <v-icon icon>mdi-key</v-icon>
+                            <v-icon icon>mdi-account</v-icon>
                             &nbsp;Sign In
                         </v-card-title>
                         <v-card-subtitle>
@@ -22,6 +22,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field v-model="emailAddress"
+                                  autocomplete="email"
                                   :rules="emailRules"
                                   :counter="255"
                                   label="Email Address"
@@ -29,6 +30,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field v-model="password"
+                                  autocomplete="current-pasword"
                                   :rules="passwordRules"
                                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                   :type="showPassword ? 'text' : 'password'"
@@ -41,14 +43,14 @@
             <v-row>
                 <v-col>
                     <v-btn color="primary"
-                           @click="reset">
+                           @click="register">
                         Register
                     </v-btn>
                 </v-col>
                 <v-col align-self="end" class="text-right">
                     <v-btn color="primary"
-                           @click="reset">
-                        Submit
+                           @click="login">
+                        Login
                     </v-btn>
                 </v-col>
             </v-row>
@@ -57,8 +59,11 @@
 </template>
 
 <script type="text/javascript">
+    import { StoreActions } from "../store";
+
     export default {
         data: () => ({
+            isValid: false,
             emailAddress: "",
             password: "",
             showPassword: false,
@@ -67,11 +72,20 @@
                 v => /.+@.+/.test(v) || 'E-mail must be valid',
             ],
             passwordRules: [
-                v => !!v || 'E-mail is required'
+                v => !!v || 'Password is required'
             ]
         }),
         methods: {
-            reset() {
+            async login() {
+                if (this.isValid) {
+                    console.log("valid");
+                    await this.$store.dispatch(StoreActions.authenticateAccount, {
+                        emailAddress: this.emailAddress,
+                        password: this.password
+                    })
+                }
+            },
+            register() {
 
             }
         }
