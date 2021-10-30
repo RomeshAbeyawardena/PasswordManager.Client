@@ -7,6 +7,7 @@ require("./filters");
 require("./components/CredentialViewer");
 Vue.config.productionTip = false;
 
+
 new Vue({
   store,
   vuetify,

@@ -9,10 +9,11 @@ export const StoreActions = {
     selectTile: "selectTile",
 }
 
-let myApi = Api.api.GetApi("http://localhost:5500/api");
+let myApi = Api.api.GetApi("/api");
 
 export default new Vuex.Store({
     state: {
+        accountId: null,
         account: {},
         selectedTileItem: null,
         selectedTileDetails: {}

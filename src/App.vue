@@ -7,7 +7,8 @@
         </v-app-bar>
 
         <v-main>
-            <TileList :tiles="account.tiles" v-on:changed="tileListChanged" />
+            <Login v-if="!shown" />
+            <TileList v-if="shown" :tiles="account.tiles" v-on:changed="tileListChanged" />
             <v-bottom-sheet v-model="shown">
                 <TileDetails :tile-details="selectedTileDetails" />
             </v-bottom-sheet>
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+    import Login from "./components/Login";
     import TileList from "./components/TileList";
     import TileDetails from "./components/TileDetails";
     import { StoreActions } from "./store";
@@ -25,6 +27,7 @@
         name: "App",
 
         components: {
+            Login,
             TileList,
             TileDetails
         },
