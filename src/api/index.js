@@ -1,5 +1,6 @@
 ﻿import Api from "./api";
-
+import Payload from "./payload";
 export default {
-    api: Api
+    api: Api,
+    payload: Payload
 }

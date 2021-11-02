@@ -11,6 +11,7 @@ export const StoreActions = {
 }
 
 let myApi = Api.api.GetApi("/api");
+let _payload = Api.payload;
 
 export default new Vuex.Store({
     state: {
@@ -36,8 +37,8 @@ export default new Vuex.Store({
     actions: {
         authenticateAccount(context, payload) {
             let ctx = context;
-            return myApi.get("account/authorise", {
-                payload: "".concat(btoa(payload.emailAddress, "|", btoa(payload.password)))
+            return myApi.post("account/authenticate", {
+                payload: _payload.buildPayLoad("auth", [payload.emailAddress, payload.password])
             }).then(e => ctx.commit("setAccountId", e));
         },
         selectTile(context, tile) {
@@ -50,14 +51,15 @@ export default new Vuex.Store({
         },
         getAccount(context, accountId) {
             let ctx = context;
+            console.log(accountId);
             myApi.get("account", {
-                payload: btoa(accountId)
+                payload: _payload.buildPayLoad("auth:", [ accountId ])
             }).then(e => ctx.commit("setAccount", e));
         },
         getTileDetails(context, payload) {
             let ctx = context;
             return myApi.get("tile", {
-                payload: btoa("".concat(btoa(payload.accountId), "|", btoa(payload.tileId)))
+                payload: _payload.buildPayLoad("request:",[payload.accountId, payload.tileId])
             }).then(e => ctx.commit("setSelectedTileDetails", e));
         }
     },

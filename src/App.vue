@@ -48,7 +48,7 @@
             }
         },
         async mounted() {
-            await this.$store.dispatch(StoreActions.getAccount, { payload: btoa("cbb0291892114d258ad254193f0889a9") })
+            await this.$store.dispatch(StoreActions.getAccount, "cbb0291892114d258ad254193f0889a9");
         }
     };
 </script>
