@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Promise from "promise";
 import Api from "../api";
+
 Vue.use(Vuex);
 
 export const StoreActions = {
@@ -13,14 +15,38 @@ export const StoreActions = {
 let myApi = Api.api.GetApi("/api");
 let _payload = Api.payload;
 
+function handleError(error, context, getMessage) {
+    if (error.status === 400) {
+        context.commit("setAlert", { type: "warning", message: getMessage(error.data), display: true })
+    }
+    else if (error.status === 500) {
+        console.log("Server error", error);
+    }
+    else {
+        console.log("Unknown error", error);
+    }
+}
+
 export default new Vuex.Store({
     state: {
+        alert: {
+            type: "none",
+            message: "",
+            display: false
+        },
         accountId: null,
         account: {},
         selectedTileItem: null,
         selectedTileDetails: {}
     },
     mutations: {
+        setAlert(state, alert) {
+            Vue.set(state, "alert", {
+                type: alert.type,
+                message: alert.message,
+                display: alert.display
+            });
+        },
         setAccountId(state, accountId) {
             Vue.set(state, "accountId", accountId);
         },
@@ -37,9 +63,14 @@ export default new Vuex.Store({
     actions: {
         authenticateAccount(context, payload) {
             let ctx = context;
-            return myApi.post("account/authenticate", {
-                payload: _payload.buildPayLoad("auth", [payload.emailAddress, payload.password])
-            }).then(e => ctx.commit("setAccountId", e));
+
+            return new Promise(resolve => {
+                myApi.post("account/authenticate", {
+                    payload: _payload.buildPayLoad("auth", [payload.emailAddress, payload.password])
+                })
+                    .then(e => { ctx.commit("setAccountId", e); resolve(e); })
+                    .catch(e => handleError(e, ctx, errorData => errorData["EmailAddress"].join(";") ));
+            });
         },
         selectTile(context, tile) {
             context.commit("setSelectedTile", tile);
